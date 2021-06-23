@@ -467,10 +467,10 @@ void ConnPoolImplBase::onConnectionEvent(ActiveClient& client, absl::string_view
     if (!pending_streams_.empty()) {
       tryCreateNewConnections();
     }
-  } else if (event == Network::ConnectionEvent::Connected) {
+  } else if (event == Network::ConnectionEvent::Connected && client.state() == ActiveClient::State::CONNECTING) {
+    // Ignore further calls to this after connection is complete as it is ssl handover
     client.conn_connect_ms_->complete();
     client.conn_connect_ms_.reset();
-    ASSERT(client.state() == ActiveClient::State::CONNECTING);
     transitionActiveClientState(client, ActiveClient::State::READY);
 
     // At this point, for the mixed ALPN pool, the client may be deleted. Do not

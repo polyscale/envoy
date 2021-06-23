@@ -102,6 +102,12 @@ public:
    */
   virtual Tcp::ConnectionPool::ConnectionData*
   onDownstreamEvent(Network::ConnectionEvent event) PURE;
+
+  /**
+   * Retreive the underlaying ConnectionData
+   * @return the underlying ConnectionData.
+   */
+  virtual Tcp::ConnectionPool::ConnectionData* connectionData() PURE;
 };
 
 using GenericConnPoolPtr = std::unique_ptr<GenericConnPool>;
