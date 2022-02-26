@@ -148,6 +148,11 @@ public:
    *                      should be done by resetting the connection.
    */
   virtual Cancellable* newConnection(Callbacks& callbacks) PURE;
+
+  // Hack for PolyScale connection pool
+  // TODO: find a better way to bubble back this information, maybe hook into the on event for each created stream and count in the filter.
+  virtual int connectedCount() PURE;
+  virtual bool hasFree() PURE;
 };
 
 using InstancePtr = std::unique_ptr<Instance>;
