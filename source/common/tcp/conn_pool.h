@@ -145,6 +145,10 @@ public:
                                                 transport_socket_options, state) {}
   ~ConnPoolImpl() override { destructAllConnections(); }
 
+  // Polyscale connection pooling
+  int connectedCount() override { return ready_clients_.size() + busy_clients_.size(); }
+  bool hasFree() override { return !ready_clients_.empty(); }
+
   // Event::DeferredDeletable
   void deleteIsPending() override { deleteIsPendingImpl(); }
 

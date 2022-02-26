@@ -57,6 +57,10 @@ public:
     return pool_->newConnection(callbacks);
   }
 
+  // PolyScale: used for connection pool, find better solution
+  int connectedCount() { return pool_->connectedCount(); }
+  bool hasFree() { return pool_->hasFree(); }
+
   Upstream::HostDescriptionConstSharedPtr host() const { return pool_->host(); }
 
 private:
