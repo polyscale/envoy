@@ -37,7 +37,12 @@ public:
   void drainConnections(Envoy::ConnectionPool::DrainBehavior drain_behavior) override;
   void closeConnections() override;
   ConnectionPool::Cancellable* newConnection(ConnectionPool::Callbacks& callbacks) override;
-  // The old pool does not implement preconnecting.
+
+  // Polyscale connection pooling, we don't actually care about the original pool design
+  int connectedCount() override { return -1; }
+  bool hasFree() override { return false; }
+
+    // The old pool does not implement preconnecting.
   bool maybePreconnect(float) override { return false; }
   Upstream::HostDescriptionConstSharedPtr host() const override { return host_; }
 
