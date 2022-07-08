@@ -441,7 +441,7 @@ protected:
   // The callback upon on demand cluster discovery response.
   void onClusterDiscoveryCompletion(Upstream::ClusterDiscoveryStatus cluster_status);
 
-  virtual bool maybeTunnel(Upstream::ThreadLocalCluster& cluster);
+  bool maybeTunnel(Upstream::ThreadLocalCluster& cluster);
   void onConnectTimeout();
   virtual void onDownstreamEvent(Network::ConnectionEvent event);
   void onUpstreamData(Buffer::Instance& data, bool end_stream);
