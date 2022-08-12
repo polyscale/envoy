@@ -18,6 +18,16 @@ void ConnectionImplBase::addConnectionCallbacks(ConnectionCallbacks& cb) {
   callbacks_.push_back(&cb);
 }
 
+void ConnectionImplBase::addFuncConnectionCallbacks(ConnectionEventFuncCB cb)
+{
+	func_callbacks_.push_back(cb);
+}
+
+size_t ConnectionImplBase::numFuncConnectionCallbacks()
+{
+	return func_callbacks_.size();
+}
+
 void ConnectionImplBase::removeConnectionCallbacks(ConnectionCallbacks& callbacks) {
   // For performance/safety reasons we just clear the callback and do not resize the list
   for (auto& callback : callbacks_) {
@@ -61,6 +71,31 @@ void ConnectionImplBase::raiseConnectionEvent(ConnectionEvent event) {
     if (callback != nullptr) {
       callback->onEvent(event);
     }
+  }
+
+  for (ConnectionEventFuncCB& callback : func_callbacks_) {
+	// If a previous connected callback closed the connection, don't raise any further connected
+	// events. There was already recursion raising closed events. We still raise closed events
+	// to further callbacks because such events are typically used for cleanup.
+	if (event != ConnectionEvent::LocalClose && event != ConnectionEvent::RemoteClose &&
+		state() != State::Open) {
+	  return;
+	}
+
+	if (callback) {
+		bool erase = callback(event);
+
+		if (erase)
+		{
+			// For performance/safety reasons we just clear the callback and do not resize the list
+			for (auto& cb : func_callbacks_) {
+			  if (&cb == &callback) {
+				callback = ConnectionEventFuncCB();
+				return;
+			  }
+			}
+		}
+	}
   }
 }
 
