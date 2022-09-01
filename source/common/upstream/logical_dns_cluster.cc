@@ -104,7 +104,7 @@ LogicalDnsCluster::~LogicalDnsCluster() {
 }
 
 void LogicalDnsCluster::startResolve() {
-  ENVOY_LOG(debug, "starting async DNS resolution for {}", dns_address_);
+  ENVOY_LOG(trace, "starting async DNS resolution for {}", dns_address_);
   info_->stats().update_attempt_.inc();
 
   active_dns_query_ = dns_resolver_->resolve(
@@ -112,7 +112,7 @@ void LogicalDnsCluster::startResolve() {
       [this](Network::DnsResolver::ResolutionStatus status,
              std::list<Network::DnsResponse>&& response) -> void {
         active_dns_query_ = nullptr;
-        ENVOY_LOG(debug, "async DNS resolution complete for {}", dns_address_);
+        ENVOY_LOG(trace, "async DNS resolution complete for {}", dns_address_);
 
         std::chrono::milliseconds final_refresh_rate = dns_refresh_rate_ms_;
 
@@ -162,13 +162,13 @@ void LogicalDnsCluster::startResolve() {
           if (respect_dns_ttl_ && addrinfo.ttl_ != std::chrono::seconds(0)) {
             final_refresh_rate = addrinfo.ttl_;
           }
-          ENVOY_LOG(debug, "DNS refresh rate reset for {}, refresh rate {} ms", dns_address_,
+          ENVOY_LOG(trace, "DNS refresh rate reset for {}, refresh rate {} ms", dns_address_,
                     final_refresh_rate.count());
         } else {
           info_->stats().update_failure_.inc();
           final_refresh_rate =
               std::chrono::milliseconds(failure_backoff_strategy_->nextBackOffMs());
-          ENVOY_LOG(debug, "DNS refresh rate reset for {}, (failure) refresh rate {} ms",
+          ENVOY_LOG(trace, "DNS refresh rate reset for {}, (failure) refresh rate {} ms",
                     dns_address_, final_refresh_rate.count());
         }
 

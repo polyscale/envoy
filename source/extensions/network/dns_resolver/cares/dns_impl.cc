@@ -257,7 +257,7 @@ void DnsResolverImpl::AddrInfoPendingResolution::onAresGetAddrInfoCallback(
 }
 
 void DnsResolverImpl::PendingResolution::finishResolve() {
-  ENVOY_LOG_EVENT(debug, "cares_dns_resolution_complete",
+  ENVOY_LOG_EVENT(trace, "cares_dns_resolution_complete",
                   "dns resolution for {} completed with status {}", dns_name_,
                   static_cast<int>(pending_response_.status_));
 
@@ -338,7 +338,7 @@ void DnsResolverImpl::onAresSocketStateChange(os_fd_t fd, int read, int write) {
 
 ActiveDnsQuery* DnsResolverImpl::resolve(const std::string& dns_name,
                                          DnsLookupFamily dns_lookup_family, ResolveCb callback) {
-  ENVOY_LOG_EVENT(debug, "cares_dns_resolution_start", "dns resolution for {} started", dns_name);
+  ENVOY_LOG_EVENT(trace, "cares_dns_resolution_start", "dns resolution for {} started", dns_name);
 
   // TODO(hennna): Add DNS caching which will allow testing the edge case of a
   // failed initial call to getAddrInfo followed by a synchronous IPv4
