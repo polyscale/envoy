@@ -113,7 +113,6 @@ public:
   void encodeData(Buffer::Instance& data, bool end_stream) override;
   void addBytesSentCallback(Network::Connection::BytesSentCb cb) override;
   Tcp::ConnectionPool::ConnectionData* onDownstreamEvent(Network::ConnectionEvent event) override;
-  Tcp::ConnectionPool::ConnectionData* connectionData() override { return upstream_conn_data_.get(); };
 
 private:
   Tcp::ConnectionPool::ConnectionDataPtr upstream_conn_data_;
@@ -136,7 +135,6 @@ public:
   void encodeData(Buffer::Instance& data, bool end_stream) override;
   void addBytesSentCallback(Network::Connection::BytesSentCb cb) override;
   Tcp::ConnectionPool::ConnectionData* onDownstreamEvent(Network::ConnectionEvent event) override;
-  Tcp::ConnectionPool::ConnectionData* connectionData() override { return NULL; };
 
   // Http::StreamCallbacks
   void onResetStream(Http::StreamResetReason reason,
