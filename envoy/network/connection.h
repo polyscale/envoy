@@ -63,8 +63,6 @@ public:
   virtual void onBelowWriteBufferLowWatermark() PURE;
 };
 
-using ConnectionEventFuncCB = std::function<bool(ConnectionEvent event)>; // return true means erase callback
-
 /**
  * Type of connection close to perform.
  */
@@ -110,16 +108,6 @@ public:
    * Register callbacks that fire when connection events occur.
    */
   virtual void addConnectionCallbacks(ConnectionCallbacks& cb) PURE;
-
-  /**
-   * Register callbacks that fire when connection events occur. (std::function-based)
-   */
-  virtual void addFuncConnectionCallbacks(ConnectionEventFuncCB) {}
-
-  /**
-   * Return the number of callbacks that fire when connection events occur. (std::function-based)
-   */
-  virtual size_t numFuncConnectionCallbacks() { return 0; }
 
   /**
    * Unregister callbacks which previously fired when connection events occur.

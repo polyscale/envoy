@@ -22,8 +22,6 @@ public:
 
   // Network::Connection
   void addConnectionCallbacks(ConnectionCallbacks& cb) override;
-  void addFuncConnectionCallbacks(ConnectionEventFuncCB cb) override;
-  size_t numFuncConnectionCallbacks() override;
   void removeConnectionCallbacks(ConnectionCallbacks& cb) override;
   Event::Dispatcher& dispatcher() override { return dispatcher_; }
   uint64_t id() const override { return id_; }
@@ -60,7 +58,6 @@ protected:
   Event::Dispatcher& dispatcher_;
   const uint64_t id_;
   std::list<ConnectionCallbacks*> callbacks_;
-  std::list<ConnectionEventFuncCB> func_callbacks_;
   std::unique_ptr<ConnectionStats> connection_stats_;
 
 private:
