@@ -442,7 +442,7 @@ protected:
 
   bool maybeTunnel(Upstream::ThreadLocalCluster& cluster);
   void onConnectTimeout();
-  virtual void onDownstreamEvent(Network::ConnectionEvent event);
+  void onDownstreamEvent(Network::ConnectionEvent event);
   void onUpstreamData(Buffer::Instance& data, bool end_stream);
   void onUpstreamEvent(Network::ConnectionEvent event);
   void onUpstreamConnection();
