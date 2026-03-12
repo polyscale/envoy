@@ -171,6 +171,9 @@ def envoy_dependency_imports(
         sum = "h1:sIXJOMrYnQZJu7OB7ANSF4MYri2fTEGIsRLz6LwI4xE=",
         version = "v2.0.4-0.20230330145011-496ad1ac90a4",
         build_external = "external",
+        patches = ["@envoy_build_config//:patches/com_github_lyft_protoc_gen_star_v2.patch"],
+        patch_args = ["-p1"],
+        patch_tool = "patch",
     )
     go_repository(
         name = "com_github_iancoleman_strcase",
